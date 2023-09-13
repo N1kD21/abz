@@ -17,8 +17,8 @@ export class PicturesService {
 
     resized.store({
       service: 's3',
-      aws_access_key_id: 'AKIAVKK4Y3SMC3A3ALJ3',
-      aws_secret_access_key: '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',
+      aws_access_key_id: process.env.AWS_ACCESS_KEY_ID,
+      aws_secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
       region: 'eu-north-1',
       path: 'abz.image/abz_image/panda-happy.jpg',
     });
