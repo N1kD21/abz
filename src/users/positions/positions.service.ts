@@ -5,6 +5,7 @@ import { TakePositionsDto } from '../dto/takePositions.dto';
 export class PositionsService {
   getPositions(): TakePositionsDto[] {
     return [
+      { pos: 'Employee', id: 0 },
       { pos: 'Security', id: 1 },
       { pos: 'Designer', id: 2 },
       { pos: 'Content manager', id: 3 },

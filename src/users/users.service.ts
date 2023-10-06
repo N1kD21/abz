@@ -21,7 +21,7 @@ export class UsersService {
       user.name = dto[i].name;
       user.email = dto[i].email;
       user.phone = dto[i].phone;
-      user.position_id = dto[i].position_id;
+      //user.position_id = dto[i].position_id;
       user.photo = dto[i].photo;
       res.push(user);
     }

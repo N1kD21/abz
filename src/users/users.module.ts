@@ -6,10 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { PicturesService } from './pictures/pictures.service';
-import { Position } from './entities/postions.entity';
+import { Position } from './entities/postion.entity';
+import { Token } from './entities/token.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Position])],
+  imports: [TypeOrmModule.forFeature([User, Position, Token])],
   controllers: [ApiController],
   providers: [TokenService, PositionsService, UsersService, PicturesService],
 })

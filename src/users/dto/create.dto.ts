@@ -7,6 +7,7 @@ import {
   Matches,
   MaxLength,
   MinLength,
+  ValidationArguments,
 } from 'class-validator';
 const regexp =
   /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
@@ -36,5 +37,21 @@ export class CreateDto {
   position_id: number;
 
   @IsNotEmpty()
+  @IsString()
+  position: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(4, {
+    message: (args: ValidationArguments) => {
+      if (args.value.length <= 4) {
+        return 'Too short, minimum length is 5 character';
+      } else {
+        return (
+          'Too short, minimum length is ' + args.constraints[0] + ' characters'
+        );
+      }
+    },
+  })
   photo: string;
 }

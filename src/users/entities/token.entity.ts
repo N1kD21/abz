@@ -2,13 +2,15 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity()
-export class Position {
+export class Token {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User, (user) => user.position)
-  position: string;
-
   @Column()
-  position_id: number;
+  token: string;
+
+  @OneToOne(() => User, (user) => user.token)
+  user: User;
+
+  createAt: Date;
 }

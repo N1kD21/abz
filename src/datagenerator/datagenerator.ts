@@ -16,6 +16,7 @@ export const dataGenerator = () => {
       email: `person${i}@example.com`,
       phone: `+38012345678${i % 5}`,
       position_id: num,
+      position: 'Employee',
       photo: `https://example.com/photos/photo${i}.jpg`, // URL для фото
     };
     data.push(item);

@@ -2,10 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Position } from './postions.entity';
+import { Position } from './postion.entity';
+import { Token } from './token.entity';
 
 @Entity()
 export class User {
@@ -21,12 +23,12 @@ export class User {
   @Column()
   phone: string;
 
-  @Column()
-  position_id: number;
+  @ManyToOne(() => Position, (pos) => pos.user)
+  position: Position;
 
-  @OneToOne(() => Position, (pos) => pos.position)
+  @OneToOne(() => Token, (token) => token.user)
   @JoinColumn()
-  position: string;
+  token: Token;
 
   @Column()
   photo: string;
