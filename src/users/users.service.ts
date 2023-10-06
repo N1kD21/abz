@@ -4,6 +4,8 @@ import { Repository } from 'typeorm/repository/Repository';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateDto } from './dto/create.dto';
+import { Position } from './entities/postion.entity';
+import { Token } from './entities/token.entity';
 
 @Injectable()
 export class UsersService {
@@ -14,6 +16,16 @@ export class UsersService {
     private dataSource: DataSource,
   ) {}
 
+  private async gettingPosition(_pos_id: number): Promise<Position> {
+    const posArr = await this.dataSource.manager.find(Position);
+    return posArr.find((el) => el.id === _pos_id);
+  }
+
+  private async gettingToken(token: string): Promise<Token> {
+    const posArr = await this.dataSource.manager.find(Token);
+    return posArr.find((el) => el.token === token);
+  }
+
   async create(dto: CreateDto[]) {
     const res: User[] = [];
     for (let i = 0; i < dto.length; i++) {
@@ -21,7 +33,8 @@ export class UsersService {
       user.name = dto[i].name;
       user.email = dto[i].email;
       user.phone = dto[i].phone;
-      //user.position_id = dto[i].position_id;
+      user.position = await this.gettingPosition(dto[i].position_id);
+      user.token = await this.gettingToken('');
       user.photo = dto[i].photo;
       res.push(user);
     }

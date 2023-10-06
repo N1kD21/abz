@@ -8,10 +8,11 @@ import { UsersService } from './users.service';
 import { PicturesService } from './pictures/pictures.service';
 import { Position } from './entities/postion.entity';
 import { Token } from './entities/token.entity';
+import { AddNewUserService } from './add-new-user/add-new-user.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Position, Token])],
   controllers: [ApiController],
-  providers: [TokenService, PositionsService, UsersService, PicturesService],
+  providers: [TokenService, PositionsService, UsersService, PicturesService, AddNewUserService],
 })
 export class UsersModule {}
