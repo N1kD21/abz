@@ -1,5 +1,9 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from './user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Token {
@@ -9,8 +13,6 @@ export class Token {
   @Column()
   token: string;
 
-  @OneToOne(() => User, (user) => user.token)
-  user: User;
-
+  @CreateDateColumn()
   createAt: Date;
 }

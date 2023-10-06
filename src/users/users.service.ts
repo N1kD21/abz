@@ -34,7 +34,7 @@ export class UsersService {
       user.email = dto[i].email;
       user.phone = dto[i].phone;
       user.position = await this.gettingPosition(dto[i].position_id);
-      user.token = await this.gettingToken('');
+      user.token = await this.gettingToken(''); // change '' to normal token
       user.photo = dto[i].photo;
       res.push(user);
     }

@@ -30,12 +30,12 @@ export class ApiController {
   ) {}
 
   @Get('/token')
-  getToken(): string {
+  private getToken(): string {
     return this.tokenService.getToken();
   }
 
   @Get('/users/:id')
-  async getById(@Param('id', ParseIntPipe) id: number) {
+  private async getById(@Param('id', ParseIntPipe) id: number) {
     if (id < 1) {
       throw new BadRequestException('Id має бути більше 0');
     }
@@ -48,14 +48,14 @@ export class ApiController {
   }
 
   @Get('/positions')
-  getPositions() {
+  private getPositions() {
     this.picturesService.cropping_img();
     return this.positionService.getPositions();
   }
 
   @UsePipes(new ValidationPipe())
   @Post('/users')
-  authUsers(@Body() dto: CreateDto) {
+  private authUsers(@Body() dto: CreateDto) {
     //this.usersService.create([dto]);
     return dto;
   }
