@@ -38,10 +38,6 @@ export class CreateDto {
 
   @IsNotEmpty()
   @IsString()
-  position: string;
-
-  @IsNotEmpty()
-  @IsString()
   @MinLength(4, {
     message: (args: ValidationArguments) => {
       if (args.value.length <= 4) {
@@ -54,4 +50,7 @@ export class CreateDto {
     },
   })
   photo: string;
+
+  @IsString()
+  token: string;
 }

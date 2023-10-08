@@ -56,7 +56,7 @@ export class ApiController {
   @UsePipes(new ValidationPipe())
   @Post('/users')
   private authUsers(@Body() dto: CreateDto) {
-    //this.usersService.create([dto]);
+    this.usersService.create(dto);
     return dto;
   }
 }

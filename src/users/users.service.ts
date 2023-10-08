@@ -17,32 +17,33 @@ export class UsersService {
   ) {}
 
   private async gettingPosition(_pos_id: number): Promise<Position> {
-    const posArr = await this.dataSource.manager.find(Position);
-    return posArr.find((el) => el.id === _pos_id);
+    const pos = await this.dataSource
+      .getRepository(Position)
+      .createQueryBuilder('position')
+      .where('position.id = :id', { id: _pos_id })
+      .getOneOrFail();
+    return pos;
   }
 
-  private async gettingToken(token: string): Promise<Token> {
-    const posArr = await this.dataSource.manager.find(Token);
-    return posArr.find((el) => el.token === token);
+  private async gettingToken(tokenCheck: string) {
+    await this.dataSource
+      .getRepository(Token)
+      .createQueryBuilder('token')
+      .where('token.token = :tokenCheck', { tokenCheck })
+      .getOneOrFail();
   }
 
-  async create(dto: CreateDto[]) {
-    const res: User[] = [];
-    for (let i = 0; i < dto.length; i++) {
-      const user = new User();
-      user.name = dto[i].name;
-      user.email = dto[i].email;
-      user.phone = dto[i].phone;
-      user.position = await this.gettingPosition(dto[i].position_id);
-      user.token = await this.gettingToken(''); // change '' to normal token
-      user.photo = dto[i].photo;
-      res.push(user);
-    }
+  async create(dto: CreateDto) {
+    const user = new User();
+    user.name = dto.name;
+    user.email = dto.email;
+    user.phone = dto.phone;
+    user.position = (await this.gettingPosition(dto.position_id)).position;
+    user.photo = dto.photo;
+    await this.gettingToken(dto.token);
 
-    res.forEach(async (el) => {
-      await this.dataSource.transaction(async (manager) => {
-        await manager.save(el);
-      });
+    await this.dataSource.transaction(async (manager) => {
+      await manager.save(user);
     });
   }
 

@@ -1,5 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Position } from './postion.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -15,9 +14,9 @@ export class User {
   @Column()
   phone: string;
 
-  @ManyToOne(() => Position, (pos) => pos.user)
-  position: Position;
-
   @Column()
   photo: string;
+
+  @Column()
+  position: string;
 }
