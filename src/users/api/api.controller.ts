@@ -31,7 +31,7 @@ export class ApiController {
 
   @Get('/token')
   private getToken(): string {
-    return this.tokenService.getToken();
+    return this.tokenService.generateToken();
   }
 
   @Get('/users/:id')

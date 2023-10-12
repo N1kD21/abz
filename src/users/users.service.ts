@@ -1,19 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, EntityManager } from 'typeorm';
-import { Repository } from 'typeorm/repository/Repository';
+import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateDto } from './dto/create.dto';
 import { Position } from './entities/postion.entity';
 import { Token } from './entities/token.entity';
+import { TokenService } from './token/token.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
-    private readonly entityManager: EntityManager,
     private dataSource: DataSource,
+    private tS: TokenService,
   ) {}
 
   private async gettingPosition(_pos_id: number): Promise<Position> {
@@ -25,14 +24,6 @@ export class UsersService {
     return pos;
   }
 
-  private async gettingToken(tokenCheck: string) {
-    await this.dataSource
-      .getRepository(Token)
-      .createQueryBuilder('token')
-      .where('token.token = :tokenCheck', { tokenCheck })
-      .getOneOrFail();
-  }
-
   async create(dto: CreateDto) {
     const user = new User();
     user.name = dto.name;
@@ -40,11 +31,10 @@ export class UsersService {
     user.phone = dto.phone;
     user.position = (await this.gettingPosition(dto.position_id)).position;
     user.photo = dto.photo;
-    await this.gettingToken(dto.token);
+    const token: Token = await this.tS.getToken(dto.token);
 
-    await this.dataSource.transaction(async (manager) => {
-      await manager.save(user);
-    });
+    await this.dataSource.manager.save(user);
+    await this.tS.deleteToken(token);
   }
 
   async getById(id: number) {
