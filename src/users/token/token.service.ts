@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { Token } from '../entities/token.entity';
 
@@ -23,7 +23,9 @@ export class TokenService {
 
   private checkTime(token: Token) {
     if (Date.now() - token.createAt.getTime() > 40 * 60000) {
-      throw new Error('Token is expired. Create new Token and try again.');
+      throw new BadRequestException(
+        'Token is expired. Create new Token and try again.',
+      );
     }
     return token;
   }

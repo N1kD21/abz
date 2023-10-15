@@ -17,10 +17,6 @@ import { UsersService } from '../users.service';
 
 @Controller('api/v1')
 export class ApiController {
-  baseresp = {
-    success: true,
-  };
-
   constructor(
     private readonly tokenService: TokenService,
     private readonly positionService: PositionsService,
@@ -29,8 +25,10 @@ export class ApiController {
 
   @Get('/token')
   private getToken() {
-    this.baseresp['token'] = this.tokenService.generateToken();
-    return this.baseresp;
+    const res = this.tokenService.generateToken();
+    const message = 'Success!';
+    const statusCode = 200;
+    return { res, message, statusCode };
   }
 
   @Get('/user/:id')
@@ -42,8 +40,9 @@ export class ApiController {
     if (res === undefined) {
       throw new NotFoundException('Такий Id відсутній у БД');
     }
-    this.baseresp['user'] = res;
-    return this.baseresp;
+    const message = 'Success!';
+    const statusCode = 200;
+    return { res, message, statusCode };
   }
 
   @Get('/positions')
@@ -58,7 +57,9 @@ export class ApiController {
   private authUsers(@Body() dto: CreateDto) {
     this.usersService.create(dto);
     const res = dto;
-    return this.generateRes(res);
+    const message = 'Success!';
+    const statusCode = 200;
+    return { res, message, statusCode };
   }
 
   @Get('/users')
@@ -68,8 +69,8 @@ export class ApiController {
   }
 
   private generateRes(res) {
-    const status = res.length ? 200 : 404;
+    const statusCode = res.length ? 200 : 404;
     const message = res.length ? 'Success!' : 'Not Found!';
-    return { res, message, status };
+    return { res, message, statusCode };
   }
 }
