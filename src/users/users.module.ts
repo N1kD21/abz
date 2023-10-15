@@ -13,6 +13,12 @@ import { AddNewUserService } from './add-new-user/add-new-user.service';
 @Module({
   imports: [TypeOrmModule.forFeature([User, Position, Token])],
   controllers: [ApiController],
-  providers: [TokenService, PositionsService, UsersService, PicturesService, AddNewUserService],
+  providers: [
+    TokenService,
+    PositionsService,
+    UsersService,
+    PicturesService,
+    AddNewUserService,
+  ],
 })
 export class UsersModule {}

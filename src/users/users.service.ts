@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { User } from './entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateDto } from './dto/create.dto';
 import { Position } from './entities/postion.entity';
 import { Token } from './entities/token.entity';
@@ -10,7 +9,6 @@ import { TokenService } from './token/token.service';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
     private dataSource: DataSource,
     private tS: TokenService,
   ) {}
@@ -45,5 +43,12 @@ export class UsersService {
       return user.id === id;
     });
     return userObj;
+  }
+
+  public async getAllUsers() {
+    return await this.dataSource
+      .getRepository(User)
+      .createQueryBuilder('user')
+      .getMany();
   }
 }

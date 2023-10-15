@@ -21,19 +21,28 @@ export class TokenService {
     this.dataSource.manager.save(tokenNew);
   }
 
+  private checkTime(token: Token) {
+    if (Date.now() - token.createAt.getTime() > 40 * 60000) {
+      throw new Error('Token is expired. Create new Token and try again.');
+    }
+    return token;
+  }
+
   public async getToken(token: string) {
-    return await this.dataSource
+    let res = await this.dataSource
       .getRepository(Token)
       .createQueryBuilder('token')
       .where('token.token = :token', { token })
       .getOneOrFail();
+    res = this.checkTime(res);
+    return res;
   }
 
   public async deleteToken(token: Token) {
     return await this.dataSource
       .getRepository(Token)
       .createQueryBuilder()
-      .softDelete()
+      .delete()
       .where('id = :id', { id: token.id })
       .execute();
   }
